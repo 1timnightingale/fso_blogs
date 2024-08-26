@@ -28,7 +28,6 @@ loginRouter.post('/', async (request, response) => {
     //  { expiresIn: process.env.JWT_TOKEN_EXPIRE_TIME } // time in milliseconds set in env file. 
     { expiresIn: 1000 * 60 } // time in milliseconds set in env file. 
   )
-
   response
     .status(200)
     .send({ token, username: user.username, name: user.name })

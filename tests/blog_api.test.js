@@ -72,9 +72,7 @@ describe('blog API testing', () => {
     }
     const signInResponse = await api.post('/api/login').send(testUser)
     let testToken = signInResponse.body.token
-
     const loginOption = `Bearer ${testToken}`
-
     // end of section
     // add loginOption to api.get request
     //      .set({ 'Authorization': loginOption })
@@ -192,7 +190,7 @@ describe('blog API testing', () => {
       .expect(400)
   })
 
-  test('a valid blog can be deleted ', async () => {
+  test('a valid blog can be deleted', async () => {
 
     // Section to log in test user
     const testUser = {
@@ -269,26 +267,37 @@ describe('blog API testing', () => {
 
 describe('when there is initially one user in db', () => {
   beforeEach(async () => {
+
+    /*
+        await User.deleteMany({})
+    
+        const passwordHash = await bcrypt.hash('sekret', 10)
+        const user = new User({ username: 'root', passwordHash })
+    
+        await user.save()
+    */
     await User.deleteMany({})
 
-    const passwordHash = await bcrypt.hash('sekret', 10)
-    const user = new User({ username: 'root', passwordHash })
+    const newUser = {
+      username: 'root',
+      name: 'Superuser',
+      password: 'salainen',
+    }
 
-    await user.save()
+    await api
+      .post('/api/users')
+      .send(newUser)
+      .expect(201)
+
+
   })
 
   test('creation succeeds with a fresh username', async () => {
     const usersAtStart = await helper.usersInDb()
 
-    /*const newUser = {
+    const newUser = {
       username: 'mluukkai',
       name: 'Matti Luukkainen',
-      password: 'salainen',
-    }
-      */
-    const newUser = {
-      username: 'root',
-      name: 'Superuser',
       password: 'salainen',
     }
 
